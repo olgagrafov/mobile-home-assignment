@@ -16,7 +16,7 @@ class ViewModelLocation: ViewModel() {
     fun fetchLocation() {
         viewModelScope.launch {
             try {
-                val locations = FavoriteLocationsApi.getFavoriteLocations().locations//listOf<FavoriteLocation>(f, f1, f2)
+                val locations = FavoriteLocationsApi.getFavoriteLocations().locations
                  addIsNightProperties(locations)
                 _location.value = locations
             } catch (e: Exception) {
