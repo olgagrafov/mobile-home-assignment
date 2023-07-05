@@ -13,6 +13,9 @@ class ViewModelLocation: ViewModel() {
     private val _location = MutableLiveData<List<FavoriteLocation>>()
     val location: LiveData<List<FavoriteLocation>> = _location
 
+    private val _itemLocation = MutableLiveData<ItemLocation>()
+    val itemLocation: LiveData<ItemLocation> = _itemLocation
+
     fun fetchLocation() {
         viewModelScope.launch {
             try {
@@ -25,11 +28,22 @@ class ViewModelLocation: ViewModel() {
         }
     }
 
+    fun fetchItemLocation(id: String) {
+        viewModelScope.launch {
+            try{
+                _itemLocation.value =  FavoriteLocationsApi.getFavoriteItemLocations(id)
+            }
+            catch (e: Exception) {
+                throw Exception("Failed to retrieve item locations")
+            }
+        }
+    }
+
     private suspend fun addIsNightProperties(locations: List<FavoriteLocation>) {
         for(loc in locations){
             val now = TimeTools.nowInUtc()
-            val localTime =  TimeTools.resolveLocalTime( now,loc.timezone)
-            loc.isNight = TimeTools.isTimestampBetweenLimits(localTime, loc.sunrise, loc.sunset)
+            loc.localTime = TimeTools.resolveLocalTime( now,loc.timezone)
+            loc.isNight = TimeTools.isTimestampBetweenLimits(loc.localTime, loc.sunrise, loc.sunset)
         }
     }
 }
