@@ -20,4 +20,16 @@ object FavoriteLocationsApi {
             FavoriteLocations.serializer()
         )
     }
+    suspend fun getFavoriteItemLocations(id: String): ItemLocation {
+        return NetworkCallExecutor.execute(
+            object : NetworkCall() {
+                override val hostAbility: HostAbility = HostAbility("olga-code-interview.free.beeceptor.com")
+                override val schemeAbility: ISchemeAbility = ISchemeAbility.Https
+                override val httpMethodAbility: IHttpMethodAbility = IHttpMethodAbility.Get
+                override val pathAbility: PathAbility = PathAbility("/location/:$id")
+            },
+            ItemLocation.serializer()
+        )
+    }
 }
+
