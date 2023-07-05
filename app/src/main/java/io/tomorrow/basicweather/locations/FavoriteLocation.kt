@@ -18,4 +18,12 @@ data class FavoriteLocation(
         set(value) {
             field = value
         }
+
+     var localTime:String = ""
+        get() {
+            return field
+        }
+        set(value) {
+            field = value
+        }
 }
