@@ -65,14 +65,11 @@ fun SetData(viewModel: ViewModelLocation) {
 fun ClickableItem(item: FavoriteLocation, viewModel: ViewModelLocation) {
     val itemLocation by viewModel.itemLocation.observeAsState()
     var isExpanded by remember { mutableStateOf(false) }
+    var hasFetchedData by remember { mutableStateOf(false) }
     val error by viewModel.errorItem.observeAsState()
 
     error?.let { errorMessage ->
         Toast.makeText(LocalContext.current, errorMessage, Toast.LENGTH_SHORT).show()
-    }
-
-    LaunchedEffect(isExpanded) {
-        viewModel.fetchItemLocation(item.id)
     }
 
     Box(
@@ -87,6 +84,10 @@ fun ClickableItem(item: FavoriteLocation, viewModel: ViewModelLocation) {
             Text(text = item.timesOfDay)
             Button(onClick = {
                 isExpanded = !isExpanded
+                if (isExpanded && !hasFetchedData) {
+                    viewModel.fetchItemLocation(item.id)
+                    hasFetchedData = true
+                }
             }) {
                 Text(text = if(isExpanded) "show more" else "show less")
             }
@@ -114,5 +115,3 @@ fun ClickableItem(item: FavoriteLocation, viewModel: ViewModelLocation) {
         }
     }
 }
-
-
