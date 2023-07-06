@@ -11,19 +11,6 @@ data class FavoriteLocation(
     val sunrise: String,
     val sunset: String
 ){
-     var isNight:Boolean = true
-        get() {
-            return field
-        }
-        set(value) {
-            field = value
-        }
-
+     var timesOfDay:String = ""
      var localTime:String = ""
-        get() {
-            return field
-        }
-        set(value) {
-            field = value
-        }
 }
